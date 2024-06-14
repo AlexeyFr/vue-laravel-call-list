@@ -42,4 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function calls() {
+        return $this->hasMany('App\Models\ListCall', 'user_id')->orderBy('id');
+    }
+
 }
