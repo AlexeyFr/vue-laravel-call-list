@@ -5,5 +5,5 @@ window.Alpine = Alpine;
 Alpine.start();
 
 import { createApp } from 'vue';
-import DashboardComponent from './components/Dashboard.vue';
+import DashboardComponent from './components/DashboardComponent.vue';
 createApp(DashboardComponent).mount('#app');

@@ -7,10 +7,13 @@
     @vite('resources/css/app.css')
 </head>
 <body>
+    @if(isset($ListCall) && count($ListCall) > 0)
+        <script>
+            var ListCall = @json($ListCall);
+        </script>
+    @endif
+
     <x-app-layout>
-        <x-slot name="header">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight text-center">Vue-Laravel Call-List</h2>
-        </x-slot>
         <section id="app"></section>
     </x-app-layout>
     @vite('resources/js/app.js')

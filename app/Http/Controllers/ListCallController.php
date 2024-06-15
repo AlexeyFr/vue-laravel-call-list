@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\ListCall;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,15 @@ class ListCallController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('dashboard');
+        $ListCall = ListCall::orderBy('name')->get();
+        if($request->ajax()) {
+            return $ListCall;
+        }
+        else {
+            return view('dashboard', compact('ListCall'));
+        }
     }
 
     /**
@@ -28,7 +35,11 @@ class ListCallController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Auth::check()) {
+            $newPhone = new ListCall($request->all());
+            $newPhone->user_id = Auth::user()->id;
+            $newPhone->save();
+        }
     }
 
     /**
