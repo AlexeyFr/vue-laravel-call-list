@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <section>
         <h2 v-if="action.title" class="text-center">{{action.title}}</h2>
 
         <form @submit.prevent="save()" @keydown="clearError($event.target.name)">
@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <label>{{formLables.description}}</label>
-                <textarea name="description" class="w-100" v-model="form.description"></textarea>
+                <textarea name="description" class="form-control w-100" v-model="form.description"></textarea>
                 <small v-if="errors.description" class="has-text-danger is-pulled-right">{{ errors.description[0] }}</small>
             </div>
 
@@ -34,7 +34,7 @@
                 </button>
             </div>
         </form>
-    </div>
+    </section>
 </template>
 
 <script>

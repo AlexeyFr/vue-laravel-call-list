@@ -7,7 +7,7 @@
         </thead>
 
         <tbody>
-            <tr v-for="list in listData" :key="list.id">
+            <tr v-for="list in listDataTemp" :key="list.id">
                 <td class="text-center">{{ list.called }}</td>
                 <td class="text-center">{{ list.name }}</td>
                 <td class="text-center">{{ list.phone }}</td>
@@ -22,7 +22,6 @@
                         <i class="glyphicon glyphicon-trash"></i>
                     </button>
                 </td>
-                <!-- <div>{{ list.description }}</div> -->
             </tr>
         </tbody>
     </table>
@@ -30,6 +29,6 @@
 
 <script>
     export default {
-        props:['tableLables', 'listData'],
+        props:['tableLables', 'listDataTemp'],
     }
 </script>
