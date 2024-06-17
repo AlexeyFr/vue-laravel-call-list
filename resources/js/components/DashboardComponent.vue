@@ -1,10 +1,14 @@
 <template>
     <h1 class="text-center mt-3">{{title}}</h1>
     <SearchComponent :dataSearch="dataSearch"></SearchComponent>
-    <CreateComponent :formLables="formLables" :action="action" @reRenderList="reRenderList"></CreateComponent>
-    <h6 class="text-right me-1">List calls: <b>{{listDataTemp.length}}</b></h6>
-    <ListComponent :tableLables="tableLables" :listDataTemp="listDataTemp" @modalShow="modalShow"></ListComponent>
-    <ModalComponent :modalData="modalData" :formLables="formLables" @reRenderList="reRenderList" @modalShow="modalShow"></ModalComponent>
+    <CreateComponent :formLables="formLables" :action="action" @reRenderList="getListData"></CreateComponent>
+    <div class="text-right me-1 mb-1 position-relative">
+        <span class="me-3 pe-3">List calls: <b>{{listDataTemp.length}}</b></span>
+        <i v-if="refreshShow" role="button" class="fa fa-refresh fa-lg text-info position-absolute end-0 top-50 translate-middle-y" @click="getListData"></i>
+    </div>
+    <ListComponent :tableLables="tableLables" :isLoading="isLoading" :listDataTemp="listDataTemp" @sortListByCalled="sortListByCalled" @modalShow="modalShow"></ListComponent>
+    <ModalComponent :modalData="modalData" :formLables="formLables" @reRenderList="getListData" @modalShow="modalShow"></ModalComponent>
+
 </template>
 
 <script>
@@ -34,7 +38,6 @@
                     description: 'Description',
                 },
                 tableLables: {
-                    called: 'Called',
                     name: 'Name',
                     phone: 'Phone',
                     email: 'Email',
@@ -46,7 +49,10 @@
                     title: 'Create',
                     button: 'Save'
                 },
+                isSortByCalled: false,
 
+                isLoading: true,
+                refreshShow: true,
                 listData: [],
                 listDataTemp: [],
 
@@ -63,7 +69,10 @@
 
         created() {
             if (typeof listCalls !== "undefined" && !!listCalls && listCalls.length > 0) {
-                this.listDataTemp = this.listData = listCalls;
+                setTimeout(() => {
+                    this.listDataTemp = this.listData = listCalls;
+                    this.isLoading = false;
+                }, 1000);
             }
             else {
                 this.getListData();
@@ -72,17 +81,31 @@
 
         methods: {
             getListData() {
+                this.refreshShow = false;
+                this.isLoading = true;
                 axios.post('/list/get')
                     .then(response => {
-                        this.listDataTemp = this.listData = response.data;
+                        setTimeout(() => {
+                            this.listDataTemp = this.listData = response.data;
+                            this.dataSearch.searchQuery = '';
+                            this.isSortByCalled = false;
+
+                            this.isLoading = false;
+                            this.refreshShow = true;
+                        }, 1000);
                     })
                     .catch(error => {
                         console.log("error", error);
+                        setTimeout(() => {
+                            this.isLoading = false;
+                            this.refreshShow = true;
+                        }, 1000);
                     });
             },
 
-            reRenderList() {
-                this.getListData();
+            sortListByCalled() {
+                this.isSortByCalled = !this.isSortByCalled;
+                this.sortList();
             },
 
             modalShow(state, data) {
@@ -100,6 +123,33 @@
                     this.modalData.listItem = {};
                 }
             },
+
+            sortList() {
+                if (this.isSortByCalled) {
+                    this.listDataTemp.sort(function(a,b){
+                        if (!a.called && b.called) {
+                            return -1;
+                        }
+                        else {
+                            return 1;
+                        }
+                    })
+                }
+                else {
+                    this.listDataTemp.sort(function(a,b){
+                        if (a.id > b.id) {
+                            return 1;
+                        }
+                        else {
+                            return -1;
+                        }
+                    })
+                }
+            },
+        },
+
+        mounted() {
+            this.sortList();
         },
 
         watch:{
