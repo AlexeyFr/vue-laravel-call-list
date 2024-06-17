@@ -1,19 +1,23 @@
 <template>
-    <h1 class="text-center">{{title}}</h1>
+    <h1 class="text-center mt-3">{{title}}</h1>
     <SearchComponent :dataSearch="dataSearch"></SearchComponent>
     <CreateComponent :formLables="formLables" :action="action" @reRenderList="reRenderList"></CreateComponent>
-    <ListComponent :tableLables="tableLables" :listDataTemp="listDataTemp"></ListComponent>
+    <h6 class="text-right me-1">List calls: <b>{{listDataTemp.length}}</b></h6>
+    <ListComponent :tableLables="tableLables" :listDataTemp="listDataTemp" @modalShow="modalShow"></ListComponent>
+    <ModalComponent :modalData="modalData" :formLables="formLables" @reRenderList="reRenderList" @modalShow="modalShow"></ModalComponent>
 </template>
 
 <script>
     import SearchComponent from './SearchComponent.vue';
     import CreateComponent from './CreateComponent.vue';
     import ListComponent from './ListComponent.vue';
+    import ModalComponent from './ModalComponent.vue';
     export default {
         components: {
             SearchComponent,
             CreateComponent,
             ListComponent,
+            ModalComponent,
         },
 
         data() {
@@ -25,15 +29,16 @@
                 },
                 formLables: {
                     name: 'Name',
-                    email: 'Email',
                     phone: 'Phone',
+                    email: 'Email',
                     description: 'Description',
                 },
                 tableLables: {
                     called: 'Called',
                     name: 'Name',
-                    email: 'Email',
                     phone: 'Phone',
+                    email: 'Email',
+                    description: 'Description',
                     edit: 'Edit',
                     delete: 'Delete'
                 },
@@ -45,12 +50,20 @@
                 listData: [],
                 listDataTemp: [],
 
+                modalData: {
+                    modalState: '',
+                    listItem: {},
+                    edit: {
+                        button: 'Update'
+                    },
+                    error: ''
+                },
             }
         },
 
         created() {
-            if (ListCall) {
-                this.listDataTemp = this.listData = ListCall;
+            if (typeof listCalls !== "undefined" && !!listCalls && listCalls.length > 0) {
+                this.listDataTemp = this.listData = listCalls;
             }
             else {
                 this.getListData();
@@ -72,6 +85,21 @@
                 this.getListData();
             },
 
+            modalShow(state, data) {
+                if (state) {
+                    if (state == "Error") {
+                        this.modalData.error = data
+                    }
+                    else {
+                        this.modalData.listItem = data ? data : {};
+                    }
+                    this.modalData.modalState = state;
+                }
+                else {
+                    this.modalData.modalState = this.modalData.error = ''
+                    this.modalData.listItem = {};
+                }
+            },
         },
 
         watch:{
@@ -91,6 +119,5 @@
                 }
             }
         }
-
     }
 </script>

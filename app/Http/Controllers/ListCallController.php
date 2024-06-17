@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ListCall;
 use Illuminate\Http\Request;
+use Exception;
 
 class ListCallController extends Controller
 {
@@ -13,21 +14,18 @@ class ListCallController extends Controller
      */
     public function index(Request $request)
     {
-        $ListCall = ListCall::orderBy('name')->get();
-        if($request->ajax()) {
-            return $ListCall;
+        if (Auth::check()) {
+            $listCalls = Auth::user()->hasCalls;
+            if($request->ajax()) {
+                return $listCalls;
+            }
+            else {
+                return view('dashboard', compact('listCalls'));
+            }
         }
         else {
-            return view('dashboard', compact('ListCall'));
+            abort(403);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -36,41 +34,50 @@ class ListCallController extends Controller
     public function store(Request $request)
     {
         if (Auth::check()) {
-            $newPhone = new ListCall($request->all());
-            $newPhone->user_id = Auth::user()->id;
-            $newPhone->save();
+            $itemCall = new ListCall($request->all());
+            $itemCall->user_id = Auth::user()->id;
+            $itemCall->save();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(ListCall $listCall)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ListCall $listCall)
-    {
-        //
+        else {
+            abort(403);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ListCall $listCall)
+    public function update(Request $request, $id)
     {
-        //
+        try{
+            $itemCall = ListCall::findOrFail($id);
+        }
+        catch(Exception $exception){
+            return response()->json($exception->getMessage(), 404);
+        }
+        if (Auth::check() && Auth::id() == $itemCall->user_id) {
+            $itemCall->update($request->all());
+        }
+        else {
+            abort(403);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ListCall $listCall)
+    public function destroy($id)
     {
-        //
+        try{
+            $itemCall = ListCall::findOrFail($id);
+        }
+        catch(Exception $exception){
+            return response()->json($exception->getMessage(), 404);
+        }
+        if (Auth::check() && Auth::id() == $itemCall->user_id) {
+            $itemCall->delete($id);
+        }
+        else {
+            abort(403);
+        }
     }
 }

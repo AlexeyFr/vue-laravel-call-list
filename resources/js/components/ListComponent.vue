@@ -1,25 +1,31 @@
 <template>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-hover text-center align-middle">
         <thead>
             <tr>
-                <th v-for="(lable, index) in tableLables" :key="index" class="text-center">{{lable}}</th>
+                <th v-for="(lable, index) in tableLables" :key="index">{{lable}}</th>
             </tr>
         </thead>
-
         <tbody>
-            <tr v-for="list in listDataTemp" :key="list.id">
-                <td class="text-center">{{ list.called }}</td>
-                <td class="text-center">{{ list.name }}</td>
-                <td class="text-center">{{ list.phone }}</td>
-                <td class="text-center">{{ list.email }}</td>
-                <td class="text-center">
-                    <button class="btn btn-primary">
-                        <i class="glyphicon glyphicon-pencil"></i>
+            <tr v-for="listItem in listDataTemp" :key="listItem.id" class="">
+                <td>
+                    <input class="form-check-input border-primary" type="checkbox" @change="updateCheck(listItem)" :checked="listItem.called" />
+                </td>
+                <td>{{ listItem.name }}</td>
+                <td>{{ listItem.phone }}</td>
+                <td>{{ listItem.email }}</td>
+                <td>
+                    <button class="btn text-success" @click="modalShow('Show', listItem)">
+                        <i class="fa fa-eye fa-lg"></i>
                     </button>
                 </td>
                 <td class="text-center">
-                    <button class="btn btn-danger">
-                        <i class="glyphicon glyphicon-trash"></i>
+                    <button class="btn text-primary" @click="modalShow('Edit', listItem)">
+                        <i class="fa fa-pencil fa-lg"></i>
+                    </button>
+                </td>
+                <td class="text-center">
+                    <button class="btn text-danger" @click="modalShow('Delete', listItem)">
+                        <i class="fa fa-trash fa-lg"></i>
                     </button>
                 </td>
             </tr>
@@ -30,5 +36,23 @@
 <script>
     export default {
         props:['tableLables', 'listDataTemp'],
+
+        methods: {
+            updateCheck(listItem) {
+                listItem.called = !listItem.called;
+                axios.put('list/' + listItem.id, listItem)
+                    .then(resp => {
+                        console.log('Updated');
+                        // this.$emit('modalShow', 'Updated');
+                    })
+                    .catch(err => {
+                        this.$emit('modalShow', 'Error', err.response);
+                    });
+            },
+
+            modalShow(state, data) {
+                this.$emit('modalShow', state, data);
+            }
+        }
     }
 </script>

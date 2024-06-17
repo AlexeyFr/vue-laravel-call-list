@@ -1,8 +1,8 @@
 <x-app-layout>
     <section id="app" class="container"></section>
-    @if(isset($ListCall) && count($ListCall) > 0)
+    @if(isset($listCalls) && count($listCalls) > 0)
         <script>
-            var ListCall = @json($ListCall);
+            var listCalls = @json($listCalls);
         </script>
     @endif
 </x-app-layout>

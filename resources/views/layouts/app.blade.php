@@ -7,13 +7,8 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
         <!-- Style -->
-        @vite('resources/css/app.css')
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+        @vite('resources/assets/app.css')
     </head>
     <body class="font-sans antialiased min-h-screen bg-gray-100">
         @include('layouts.navigation')

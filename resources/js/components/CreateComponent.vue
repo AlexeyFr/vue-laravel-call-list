@@ -23,14 +23,14 @@
 
             <div class="form-group">
                 <label>{{formLables.description}}</label>
-                <textarea name="description" class="form-control w-100" v-model="form.description"></textarea>
+                <textarea name="description" rows="3" class="form-control w-100" v-model="form.description"></textarea>
                 <small v-if="errors.description" class="has-text-danger is-pulled-right">{{ errors.description[0] }}</small>
             </div>
 
             <div class="form-group">
                 <button class="btn btn-primary" :disabled=isErrors>
-                    <span class='glyphicon glyphicon-save-file'></span>
-                    <span>{{action.button}}</span>
+                    <span class="me-2">{{action.button}}</span>
+                    <i class="fa fa-floppy-o fa-lg"></i>
                 </button>
             </div>
         </form>
