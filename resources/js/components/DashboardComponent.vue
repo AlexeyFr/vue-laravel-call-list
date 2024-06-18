@@ -62,8 +62,8 @@
                     btnClose: 'Close',
                     status: 'Status',
                     text: 'Text',
-                    created: 'Created',
-                    updated: 'Updated',
+                    created: 'Successfully created',
+                    updated: 'Successfully updated',
                 },
 
                 modalData: {

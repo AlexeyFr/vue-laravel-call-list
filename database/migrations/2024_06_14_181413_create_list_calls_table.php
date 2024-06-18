@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('list_calls', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->index();
-            $table->string('name');
-            $table->bigInteger('phone');
+            $table->string('name')->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->text('description')->nullable();
             $table->boolean('called')->default(false);

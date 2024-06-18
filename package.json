@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "bootstrap": "^5.2.3",
-        "font-awesome": "^4.7.0"
+        "font-awesome": "^4.7.0",
+        "vue-3-mask": "^0.0.1-alpha"
     }
 }
