@@ -20,8 +20,8 @@ Route::get('/', function () { return view('welcome'); })->name('welcome');
 Route::get('/dashboard', [ListCallController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::prefix('/list')->group(function(){
     Route::post('/get', [ListCallController::class, 'index']);
-    Route::post('/save', [ListCallController::class, 'store']);
-    Route::put('/{id}', [ListCallController::class, 'update']);
+    Route::put('/save', [ListCallController::class, 'store']);
+    Route::patch('/{id}', [ListCallController::class, 'update']);
     Route::delete('/{id}', [ListCallController::class, 'destroy']);
 });
 

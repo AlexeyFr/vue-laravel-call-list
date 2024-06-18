@@ -1,25 +1,24 @@
 <template>
-    <h1 class="text-center mt-3">{{title}}</h1>
-    <SearchComponent :dataSearch="dataSearch"></SearchComponent>
-    <CreateComponent :formLables="formLables" :action="action" @reRenderList="getListData"></CreateComponent>
-    <div class="text-right me-1 mb-1 position-relative">
-        <span class="me-3 pe-3">List calls: <b>{{listDataTemp.length}}</b></span>
-        <i v-if="refreshShow" role="button" class="fa fa-refresh fa-lg text-info position-absolute end-0 top-50 translate-middle-y" @click="getListData"></i>
-    </div>
-    <ListComponent :tableLables="tableLables" :isLoading="isLoading" :listDataTemp="listDataTemp" @sortListByCalled="sortListByCalled" @modalShow="modalShow"></ListComponent>
-    <ModalComponent :modalData="modalData" :formLables="formLables" @reRenderList="getListData" @modalShow="modalShow"></ModalComponent>
+    <header class="text-center">
+        <h1 class="text-center mt-4 mb-3">{{title}}</h1>
+        <button class="btn btn-success btn-lg" @click="modalShow('Create')">
+            <span class="me-2">{{texts.btnCreate}}</span>
+            <i class="fa fa-plus"></i>
+        </button>
+    </header>
 
+    <SearchComponent :dataSearch="dataSearch"></SearchComponent>
+    <ListComponent :tableLables="tableLables" :texts="texts" :isLoading="isLoading" :refreshShow="refreshShow" @reRenderList="getListData" :listDataTemp="listDataTemp" @sortListByCalled="sortListByCalled" @modalShow="modalShow"></ListComponent>
+    <ModalComponent :formLables="formLables" :texts="texts" :modalData="modalData" @reRenderList="getListData" @modalShow="modalShow"></ModalComponent>
 </template>
 
 <script>
     import SearchComponent from './SearchComponent.vue';
-    import CreateComponent from './CreateComponent.vue';
     import ListComponent from './ListComponent.vue';
     import ModalComponent from './ModalComponent.vue';
     export default {
         components: {
             SearchComponent,
-            CreateComponent,
             ListComponent,
             ModalComponent,
         },
@@ -45,10 +44,6 @@
                     edit: 'Edit',
                     delete: 'Delete'
                 },
-                action: {
-                    title: 'Create',
-                    button: 'Save'
-                },
                 isSortByCalled: false,
 
                 isLoading: true,
@@ -56,14 +51,26 @@
                 listData: [],
                 listDataTemp: [],
 
+                texts: {
+                    list_calls: 'List calls',
+                    btnCreate: 'Create',
+                    btnSave: 'Save',
+                    btnUpdate: 'Update',
+                    show: 'Show',
+                    edit: 'Edit',
+                    delete: 'Delete',
+                    btnClose: 'Close',
+                    status: 'Status',
+                    text: 'Text',
+                    created: 'Created',
+                    updated: 'Updated',
+                },
+
                 modalData: {
                     modalState: '',
                     listItem: {},
-                    edit: {
-                        button: 'Update'
-                    },
-                    error: ''
-                },
+                    errors: {},
+                }
             }
         },
 
@@ -111,7 +118,7 @@
             modalShow(state, data) {
                 if (state) {
                     if (state == "Error") {
-                        this.modalData.error = data
+                        this.modalData.errors = data ? data : {};
                     }
                     else {
                         this.modalData.listItem = data ? data : {};
@@ -119,8 +126,8 @@
                     this.modalData.modalState = state;
                 }
                 else {
-                    this.modalData.modalState = this.modalData.error = ''
-                    this.modalData.listItem = {};
+                    this.modalData.modalState = '';
+                    this.modalData.listItem = this.modalData.errors = {};
                 }
             },
 

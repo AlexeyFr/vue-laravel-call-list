@@ -11,30 +11,30 @@
                     <b>Description:</b> {{modalData.listItem.description}}
                 </div>
 
-                <div v-if="modalData.modalState == 'Edit'" class="modal-body">
-                    <!-- <UpdateComponent :phone="modalData.listItem" :data="modalData.edit" :formLables="formLables" @reRenderList="reRenderList" @modalShow="modalShow"></UpdateComponent> -->
+                <div v-if="modalData.modalState == 'Create' || modalData.modalState == 'Edit'" class="modal-body">
+                    <FormComponent :formLables="formLables" :texts="texts" :modalData="modalData" @reRenderList="reRenderList" @modalShow="modalShow"></FormComponent>
                 </div>
 
                 <div v-else-if="modalData.modalState == 'Delete'" class="modal-body">
                     <h4 class="modal-title text-danger mb-2">Do you really want to delete?</h4>
                     <div class="text-center">
-                        <DeleteComponent :listItemId="modalData.listItem.id" @reRenderList="reRenderList" @modalShow="modalShow"></DeleteComponent>
+                        <DeleteComponent :texts="texts" :listItemId="modalData.listItem.id" @reRenderList="reRenderList" @modalShow="modalShow"></DeleteComponent>
                     </div>
                 </div>
 
                 <div v-else-if="modalData.modalState == 'Error'" class="modal-body">
                     <div class="modal-body">
                         <h4 class="modal-title text-center text-danger">
-                            Status: {{modalData.error.status}}
+                            {{texts.status}}: {{modalData.errors.status}}
                             <br>
-                            Text: {{modalData.error.statusText}}
+                            {{texts.text}}: {{modalData.errors.statusText}}
                         </h4>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" @click="modalShow(false)">
-                        <span class="me-2">Close</span>
+                        <span class="me-2">{{texts.btnClose}}</span>
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -45,14 +45,14 @@
 
 <script>
     import DeleteComponent from './DeleteComponent.vue';
-    // import UpdateComponent from './UpdateComponent.vue';
+    import FormComponent from './FormComponent.vue';
 
     export default {
-        props:['modalData', 'formLables'],
+        props:['formLables', 'texts', 'modalData'],
 
         components: {
             DeleteComponent,
-            // UpdateComponent
+            FormComponent
         },
 
         methods: {
