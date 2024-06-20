@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ListCall;
 use Illuminate\Http\Request;
+use App\Http\Requests\ListCallRequest;
 use Exception;
 
 class ListCallController extends Controller
@@ -31,7 +32,8 @@ class ListCallController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+    public function store(ListCallRequest $request)
     {
         if (Auth::check()) {
             $itemCall = new ListCall($request->all());
@@ -46,8 +48,9 @@ class ListCallController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(ListCallRequest $request, $id)
     {
+
         try{
             $itemCall = ListCall::findOrFail($id);
         }

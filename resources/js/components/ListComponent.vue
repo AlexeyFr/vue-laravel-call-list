@@ -7,6 +7,8 @@
             <i v-if="refreshShow" role="button" class="fa fa-refresh fa-lg text-info position-absolute end-0 top-50 translate-middle-y" @click="reRenderList"></i>
         </div>
 
+        <h4 class="text-center mt-4 text-warning" v-if="!listDataTemp.length && !isLoading">The table is empty! </h4>
+
         <table class="table table-bordered table-hover text-center align-middle position-relative">
             <thead v-if="listDataTemp.length">
                 <tr>

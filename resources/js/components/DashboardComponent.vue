@@ -25,7 +25,7 @@
 
         data() {
             return {
-                title: 'Vue-Laravel Call-Lists',
+                title: 'Vue-Laravel Call-List',
                 dataSearch: {
                     title: 'Search',
                     searchQuery: ''
@@ -52,7 +52,8 @@
                 listDataTemp: [],
 
                 texts: {
-                    list_calls: 'List calls',
+                    table_name: 'Table Call-List',
+                    list_calls: 'Calls list count',
                     btnCreate: 'Create',
                     btnSave: 'Save',
                     btnUpdate: 'Update',
@@ -79,7 +80,7 @@
                 setTimeout(() => {
                     this.listDataTemp = this.listData = listCalls;
                     this.isLoading = false;
-                }, 1000);
+                }, 500);
             }
             else {
                 this.getListData();
@@ -99,14 +100,14 @@
 
                             this.isLoading = false;
                             this.refreshShow = true;
-                        }, 1000);
+                        }, 500);
                     })
                     .catch(error => {
                         console.log("error", error);
                         setTimeout(() => {
                             this.isLoading = false;
                             this.refreshShow = true;
-                        }, 1000);
+                        }, 500);
                     });
             },
 
