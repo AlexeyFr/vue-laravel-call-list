@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ListCallController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () { return view('welcome'); })->name('welcome');
 
 Route::get('/dashboard', [ListCallController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::prefix('/list')->group(function(){
     Route::post('/get', [ListCallController::class, 'index']);
     Route::put('/save', [ListCallController::class, 'store']);
@@ -25,10 +25,4 @@ Route::prefix('/list')->group(function(){
     Route::delete('/{id}', [ListCallController::class, 'destroy']);
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
+Auth::routes();

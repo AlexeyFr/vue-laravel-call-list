@@ -2,7 +2,7 @@
     <section>
         <h2 class="text-center mt-4 mb-0">{{texts.table_name}}</h2>
 
-        <div class="text-right me-1 position-relative">
+        <div class="text-end me-1 position-relative">
             <span v-if="listDataTemp.length" class="me-3 pe-3">{{texts.list_calls}}: <b>{{listDataTemp.length}}</b></span>
             <i v-if="refreshShow" role="button" class="fa fa-refresh fa-lg text-info position-absolute end-0 top-50 translate-middle-y" @click="reRenderList"></i>
         </div>
@@ -12,7 +12,7 @@
         <table class="table table-bordered table-hover text-center align-middle position-relative">
             <thead v-if="listDataTemp.length">
                 <tr>
-                    <th role="button" class="position-relative" @click="sortListByCalled">
+                    <th class="position-relative" style="cursor: pointer" @click="sortListByCalled">
                         <span>Called</span>
                         <i class="fa fa-sort position-absolute top-50 end-0 translate-middle-y me-1"></i>
                     </th>

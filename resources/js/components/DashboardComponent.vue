@@ -68,7 +68,7 @@
                 },
 
                 modalData: {
-                    modalState: '',
+                    modalState: false,
                     listItem: {},
                     errors: {},
                 }
@@ -127,7 +127,7 @@
                     this.modalData.modalState = state;
                 }
                 else {
-                    this.modalData.modalState = '';
+                    this.modalData.modalState = false;
                     this.modalData.listItem = this.modalData.errors = {};
                 }
             },
